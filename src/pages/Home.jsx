@@ -475,7 +475,7 @@ const Home = () => {
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/30 via-transparent to-transparent" />
                 <img
-                  src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1600&q=80"
+                  src="https://cache.magicmaman.com/data/photo/w1000_ci/1eb/voiturefamiliale.jpg"
                   alt="Famille en voyage en voiture"
                   className="w-full h-64 sm:h-80 md:h-96 object-cover"
                   loading="lazy"

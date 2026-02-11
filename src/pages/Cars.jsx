@@ -183,7 +183,7 @@ const Cars = () => {
     <div className="min-h-screen bg-slate-50 min-w-0 overflow-x-hidden">
       
       {/* Header — Design "Flat" Solide */}
-      <section className="bg-slate-900 text-white pt-12 pb-24 sm:pt-16 sm:pb-32 px-4 relative">
+      <section className="bg-slate-900 text-white pt-12 pb-24 sm:pt-16 sm:pb-32 px-4 relative overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
             <div className="max-w-2xl">
                 <p className="text-red-400 font-bold tracking-widest uppercase text-xs mb-3">
@@ -196,6 +196,10 @@ const Cars = () => {
                     De la citadine agile au SUV robuste, découvrez une sélection de véhicules entretenus avec soin pour une expérience de conduite sans compromis au Maroc.
                 </p>
             </div>
+        </div>
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/5 blur-2xl" />
+          <div className="absolute -bottom-28 -left-28 w-80 h-80 rounded-full bg-red-500/10 blur-2xl" />
         </div>
       </section>
 
@@ -225,7 +229,7 @@ const Cars = () => {
         )}
 
         {/* Barre d'outils (Recherche + Tri + Vue) */}
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4 sm:p-5 flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Input Recherche */}
             <div className="relative w-full md:w-96">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -442,7 +446,7 @@ const Cars = () => {
                 {displayedCars.map((car) => (
                   <article 
                     key={car.id} 
-                    className={`group bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-red-100 transition-all duration-300 ${viewMode === 'list' ? 'flex flex-col sm:flex-row' : 'flex flex-col'}`}
+                    className={`group bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-red-100 transition-all duration-300 ${viewMode === 'list' ? 'flex flex-col sm:flex-row' : 'flex flex-col'}`}
                   >
                     {/* Image Section */}
                     <div className={`relative bg-slate-100 flex items-center justify-center overflow-hidden ${viewMode === 'list' ? 'sm:w-64 shrink-0 aspect-[4/3] sm:aspect-auto' : 'aspect-[4/3] h-48'}`}>
@@ -454,14 +458,15 @@ const Cars = () => {
                         
                         {/* Tags Flottants */}
                         <div className="absolute top-3 left-3 flex flex-col gap-1">
-                             {car.price < 350 && <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-green-200 uppercase tracking-wide">Éco Deal</span>}
-                             {car.category === 'Luxe' && <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm uppercase tracking-wide">Premium</span>}
+                             {car.price < 350 && <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm border border-emerald-200 uppercase tracking-wide">Éco Deal</span>}
+                             {car.category === 'Luxe' && <span className="inline-flex items-center gap-1 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wide">Premium</span>}
                         </div>
                         
                         {/* Bouton Favoris */}
                         <button 
                             onClick={(e) => toggleFavorite(e, car.id)}
-                            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm text-slate-400 hover:text-red-500 hover:bg-white shadow-sm transition-colors border border-transparent hover:border-slate-100"
+                            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm text-slate-400 hover:text-red-500 hover:bg-white shadow-sm transition-colors border border-transparent hover:border-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label={favorites.includes(car.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                         >
                             <IconHeart className="w-4 h-4" filled={favorites.includes(car.id)} />
                         </button>
@@ -476,20 +481,20 @@ const Cars = () => {
                     {/* Content Section */}
                     <div className="p-5 flex flex-col flex-1 justify-between">
                       <div>
-                        <div className="flex justify-between items-start mb-2 gap-3">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2 sm:gap-3">
                           <div className="min-w-0">
                             <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-red-600 transition-colors truncate">
                               {car.name}
                             </h3>
                             <p className="text-sm text-slate-500 font-medium">{car.category}</p>
                           </div>
-                          <Link
-                            to={`/cars/${car.id}`}
-                            aria-label="Voir les détails du véhicule"
-                            className="hidden sm:inline-flex items-center justify-center px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
-                          >
-                            <IconEye className="w-4 h-4" />
-                          </Link>
+                          <div className="text-right shrink-0">
+                            <p className="text-xs text-slate-400 font-medium uppercase">À partir de</p>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-xl font-extrabold text-[#0F172B]">{car.price}</span>
+                              <span className="text-xs font-bold text-slate-500">MAD/j</span>
+                            </div>
+                          </div>
                         </div>
 
                         {/* Specs Grid */}
@@ -511,23 +516,38 @@ const Cars = () => {
                                 <span>Climatisée</span>
                             </div>
                         </div>
+
+                        {/* Features Tags */}
+                        {car.features && car.features.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mt-3">
+                                {car.features.slice(0, 4).map((feature, idx) => (
+                                    <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                        {feature}
+                                    </span>
+                                ))}
+                                {car.features.length > 4 && (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500 border border-slate-200">
+                                        +{car.features.length - 4}
+                                    </span>
+                                )}
+                            </div>
+                        )}
                       </div>
 
-                      {/* Footer: Prix + Actions */}
+                      {/* Footer: Actions */}
                       <div
-                        className={`mt-2 pt-4 border-t border-slate-100 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${
-                          viewMode === 'list' ? 'sm:justify-end sm:gap-6' : ''
+                        className={`mt-2 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:justify-end gap-3 ${
+                          viewMode === 'list' ? 'sm:gap-6' : ''
                         }`}
                       >
-                        <div className="flex sm:block justify-between items-baseline">
-                          <p className="text-xs text-slate-400 font-medium uppercase">À partir de</p>
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-extrabold text-slate-900">{car.price}</span>
-                            <span className="text-xs font-bold text-slate-500">MAD/j</span>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-2 w-full sm:w-auto justify-end">
+                        <div className="flex gap-2 w-full sm:w-auto">
+                          <Link
+                            to={`/cars/${car.id}`}
+                            aria-label="Voir les détails du véhicule"
+                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium"
+                          >
+                            Détail
+                          </Link>
                           <Link
                             to={
                               car.available
@@ -537,7 +557,7 @@ const Cars = () => {
                                   (searchEndDate ? `&endDate=${searchEndDate}` : '')
                                 : '#'
                             }
-                            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm flex-1 sm:flex-none ${
+                            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm flex-1 sm:flex-none focus:outline-none focus:ring-2 focus:ring-red-500 ${
                               car.available
                                 ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-red-200 hover:shadow-md'
                                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
