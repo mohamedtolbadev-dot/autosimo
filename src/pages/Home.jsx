@@ -83,14 +83,81 @@ const HeroCarSilhouette = () => (
 
 const Home = () => {
   const navigate = useNavigate();
+  const inputBaseClassName =
+    'w-full rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition min-h-11';
+  const inputWithIconClassName =
+    'w-full rounded-xl pl-10 pr-4 py-3 text-slate-800 placeholder:text-slate-400 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition min-h-11';
+  const selectWithIconClassName =
+    'w-full rounded-xl pl-10 pr-10 py-3 text-slate-800 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition cursor-pointer appearance-none min-h-11';
+
   const [searchData, setSearchData] = useState({
     location: 'Casablanca',
     startDate: '',
     endDate: ''
   });
 
+  const clientCount = '10K+';
+
+  const testimonials = [
+    {
+      name: 'Sara A.',
+      city: 'Casablanca',
+      rating: 5,
+      text: 'Voiture propre, service rapide et très bon rapport qualité/prix. Parfait pour un voyage en famille.'
+    },
+    {
+      name: 'Youssef B.',
+      city: 'Rabat',
+      rating: 5,
+      text: 'Réservation simple, récupération sans attente. L’équipe est professionnelle et très réactive.'
+    },
+    {
+      name: 'Khadija M.',
+      city: 'Marrakech',
+      rating: 5,
+      text: 'Excellent confort sur route, tout était conforme. Je recommande vivement !'
+    },
+    {
+      name: 'Omar H.',
+      city: 'Tanger',
+      rating: 4,
+      text: 'Très bonne expérience globalement. Support disponible et informations claires.'
+    },
+    {
+      name: 'Nadia E.',
+      city: 'Agadir',
+      rating: 5,
+      text: 'Service premium, véhicules récents. On a apprécié l’assistance et la flexibilité.'
+    }
+  ];
+
+  const faqs = [
+    {
+      q: 'Quels documents dois-je fournir pour louer une voiture ?',
+      a: 'Une pièce d\'identité valide, un permis de conduire en cours de validité et un moyen de paiement. Des documents supplémentaires peuvent être demandés selon le véhicule.'
+    },
+    {
+      q: 'Puis-je annuler ma réservation ?',
+      a: 'Oui. Les conditions d\'annulation varient selon la réservation. Nous recommandons d\'annuler au plus tard 24h avant la prise en charge pour éviter des frais.'
+    },
+    {
+      q: 'Est-ce que l\'assurance est incluse ?',
+      a: 'L\'assurance de base est incluse. Vous pouvez choisir une option premium pour une couverture renforcée selon vos besoins.'
+    },
+    {
+      q: 'Puis-je ajouter un siège enfant ?',
+      a: 'Oui, vous pouvez ajouter un siège enfant lors de la réservation (selon disponibilité).'
+    }
+  ];
+
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
+
+  const isSearchFormValid =
+    Boolean(searchData.location) && Boolean(searchData.startDate) && Boolean(searchData.endDate);
+
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!isSearchFormValid) return;
     const params = new URLSearchParams();
     if (searchData.location) params.append('location', searchData.location);
     if (searchData.startDate) params.append('startDate', searchData.startDate);
@@ -100,34 +167,8 @@ const Home = () => {
 
   const featuredCars = getFeaturedCars();
 
-  const features = [
-    {
-      icon: <IconShield />,
-      title: 'Assurance complète',
-      description: 'Tous nos véhicules sont couverts par une assurance tous risques'
-    },
-    {
-      icon: <IconClock />,
-      title: 'Service 24/7',
-      description: 'Assistance disponible jour et nuit partout au Maroc'
-    },
-    {
-      icon: <IconMapPin />,
-      title: 'Plusieurs agences',
-      description: 'Présents dans toutes les grandes villes du royaume'
-    },
-    {
-      icon: <IconCar />,
-      title: 'Flotte récente',
-      description: 'Véhicules neufs et bien entretenus'
-    }
-  ];
-
-  const testimonials = [
-    { name: 'Ahmed Benani', location: 'Casablanca', rating: 5, comment: 'Excellent service ! Voiture impeccable et équipe très professionnelle.' },
-    { name: 'Sarah Alami', location: 'Marrakech', rating: 5, comment: 'Très satisfaite de ma location. Processus simple et rapide.' },
-    { name: 'Mohammed Tazi', location: 'Rabat', rating: 5, comment: 'Je recommande vivement ! Prix compétitifs et service irréprochable.' }
-  ];
+ 
+  
 
   return (
     <div className="min-h-screen bg-slate-50 min-w-0 overflow-x-hidden">
@@ -226,7 +267,7 @@ const Home = () => {
                       id="search-location"
                       value={searchData.location}
                       onChange={(e) => setSearchData({ ...searchData, location: e.target.value })}
-                      className="search-field-input w-full border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors appearance-none cursor-pointer"
+                      className={`search-field-input ${selectWithIconClassName}`}
                     >
                       <option>Casablanca</option>
                       <option>Rabat</option>
@@ -255,7 +296,7 @@ const Home = () => {
                       type="date"
                       value={searchData.startDate}
                       onChange={(e) => setSearchData({ ...searchData, startDate: e.target.value })}
-                      className="search-date-input w-full border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors min-h-11"
+                      className={`search-date-input ${inputWithIconClassName}`}
                     />
                     {!searchData.startDate && (
                       <span className="date-custom-placeholder pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-slate-400 text-[15px]">
@@ -279,7 +320,7 @@ const Home = () => {
                       type="date"
                       value={searchData.endDate}
                       onChange={(e) => setSearchData({ ...searchData, endDate: e.target.value })}
-                      className="search-date-input w-full border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors min-h-11"
+                      className={`search-date-input ${inputWithIconClassName}`}
                     />
                     {!searchData.endDate && (
                       <span className="date-custom-placeholder pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-slate-400 text-[15px]">
@@ -294,7 +335,12 @@ const Home = () => {
                   <label className="text-sm font-medium text-slate-700 mb-2 invisible">Rechercher</label>
                   <button
                     type="submit"
-                    className="search-submit-btn w-full inline-flex items-center justify-center gap-2 bg-red-600 text-white px-4 py-3 rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors min-h-11"
+                    disabled={!isSearchFormValid}
+                    className={`search-submit-btn w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors min-h-11 ${
+                      !isSearchFormValid
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        : 'bg-red-600 text-white hover:bg-red-700'
+                    }`}
                   >
                     <IconSearch className="w-5 h-5 shrink-0" />
                     Rechercher
@@ -421,55 +467,476 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Pourquoi nous choisir — icônes SVG */}
-      <section className="py-10 sm:py-14 md:py-16 bg-white border-t border-slate-200">
-        <div className="container mx-auto px-4 sm:px-6 max-w-6xl min-w-0">
-          <header className="text-center mb-8 sm:mb-10">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2">
-              Pourquoi nous choisir ?
-            </h2>
-          </header>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-red-50 text-red-600 rounded-2xl mb-4">
-                  {feature.icon}
+      {/* Family Comfort Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative order-2 md:order-1">
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/30 via-transparent to-transparent" />
+                <img
+                  src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1600&q=80"
+                  alt="Famille en voyage en voiture"
+                  className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-950/45 to-transparent" />
+
+                <div className="absolute left-4 bottom-4 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs font-semibold text-slate-900 border border-white/60">
+                    <IconShield className="w-4 h-4 text-red-600" />
+                    Sécurité famille
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs font-semibold text-slate-900 border border-white/60">
+                    <IconCar className="w-4 h-4 text-red-600" />
+                    Grand coffre
+                  </span>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  {feature.description}
-                </p>
               </div>
-            ))}
+
+              <div className="absolute -bottom-4 -right-4 sm:bottom-6 sm:right-6 bg-white rounded-2xl shadow-lg p-4 border border-slate-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center border border-red-100">
+                    <IconUsers className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-extrabold text-slate-900 leading-none">7</p>
+                    <p className="text-xs text-slate-500 font-semibold">places max</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 md:order-2">
+              <span className="inline-flex items-center gap-2 text-red-600 text-sm font-semibold uppercase tracking-wider mb-3">
+                Pour toute la famille
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-tight">
+                Confort, espace et tranquillité
+              </h2>
+              <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6">
+                Pour vos vacances ou sorties en famille, choisissez un véhicule spacieux et agréable.
+                Climatisation, rangement et sécurité : tout est pensé pour un voyage sans stress.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-7">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+                      <IconShield className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-900">Sécurité renforcée</p>
+                      <p className="text-xs text-slate-600">Systèmes modernes + entretien régulier</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+                      <IconClock className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-900">Assistance 24/7</p>
+                      <p className="text-xs text-slate-600">Support rapide pendant votre trajet</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-700">
+                  <div className="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center shrink-0 border border-red-100">
+                    <IconUsers className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-sm sm:text-base">Sièges enfants et rehausseurs disponibles</span>
+                </li>
+                <li className="flex items-center gap-3 text-slate-700">
+                  <div className="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center shrink-0 border border-red-100">
+                    <IconCar className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-sm sm:text-base">SUV & monospaces récents, parfaits pour la route</span>
+                </li>
+              </ul>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  to="/cars"
+                  className="inline-flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                >
+                  Voir les véhicules familiaux
+                  <IconArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold border border-slate-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                >
+                  Besoin de conseils ?
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Témoignages */}
-      <section className="py-10 sm:py-14 md:py-16 bg-slate-50">
-        <div className="container mx-auto px-4 sm:px-6 max-w-6xl min-w-0">
-          <header className="text-center mb-8 sm:mb-10">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2">
-              Ce que disent nos clients
+      {/* Booking Steps Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white" />
+        
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
+          <div className="text-center mb-10 sm:mb-14">
+            <span className="inline-flex items-center gap-2 text-red-600 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+              </svg>
+              Processus simple
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              Comment réserver votre véhicule ?
             </h2>
-          </header>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
-                <div className="flex gap-1 mb-4 text-amber-500">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <IconStar key={i} className="w-5 h-5" filled />
-                  ))}
+            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
+              4 étapes simples pour louer votre voiture et partir à l'aventure
+            </p>
+          </div>
+
+          {/* Steps Diagram */}
+          <div className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4">
+              {[
+                {
+                  step: '01',
+                  title: 'Choisissez',
+                  desc: 'Sélectionnez votre véhicule idéal parmi notre flotte',
+                  icon: (
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m21 21-4.34-4.34"/>
+                      <circle cx="10" cy="10" r="7"/>
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+                      <polyline points="13 2 13 9 20 9"/>
+                    </svg>
+                  )
+                },
+                {
+                  step: '02',
+                  title: 'Réservez',
+                  desc: 'Remplissez vos informations et choisissez vos options',
+                  icon: (
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                      <path d="m9 16 2 2 4-4"/>
+                    </svg>
+                  )
+                },
+                {
+                  step: '03',
+                  title: 'Confirmez',
+                  desc: 'Recevez votre confirmation par email instantanément',
+                  icon: (
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                      <circle cx="18" cy="17" r="3"/>
+                      <path d="m20.5 18.5 1 1"/>
+                    </svg>
+                  )
+                },
+                {
+                  step: '04',
+                  title: 'Partez',
+                  desc: 'Retirez votre voiture et profitez de votre voyage',
+                  icon: (
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 13.1V16c0 .6.4 1 1 1h2"/>
+                      <circle cx="7" cy="17" r="2"/>
+                      <circle cx="17" cy="17" r="2"/>
+                      <path d="M2 12h6"/>
+                      <path d="M12 2v6"/>
+                      <path d="m15 5 3-3 3 3"/>
+                    </svg>
+                  )
+                }
+              ].map((item, idx) => (
+                <div key={item.step} className="relative flex md:flex-col items-start md:items-center gap-4 md:gap-0">
+                  {/* Broken/Twisted arrows between steps */}
+                  {idx < 3 && (
+                    <>
+                      {/* Desktop: arrows from step to step */}
+                      <div className="hidden md:block absolute top-10 left-1/2 translate-x-[52px] z-0 pointer-events-none" aria-hidden>
+                        <svg width="170" height="64" viewBox="0 0 170 64" fill="none">
+                          <path
+                            d="M2 48 C 40 8, 78 8, 92 32 S 132 56, 162 18"
+                            stroke="#ef4444"
+                            strokeOpacity="0.55"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeDasharray="9 8"
+                          />
+                          <path
+                            d="M156 12 L162 18 L154 22"
+                            stroke="#ef4444"
+                            strokeOpacity="0.8"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+
+                      {/* Mobile: arrows down */}
+                      <div className="md:hidden absolute left-6 top-[64px] z-0 pointer-events-none" aria-hidden>
+                        <svg width="64" height="140" viewBox="0 0 64 140" fill="none">
+                          <path
+                            d="M46 2 C 18 28, 54 46, 22 74 S 50 118, 18 134"
+                            stroke="#ef4444"
+                            strokeOpacity="0.45"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeDasharray="9 8"
+                          />
+                          <path
+                            d="M12 128 L18 134 L10 136"
+                            stroke="#ef4444"
+                            strokeOpacity="0.8"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Step Node */}
+                  <div className="relative z-10 shrink-0">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white border border-slate-200 shadow-lg flex items-center justify-center relative group">
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        {item.icon}
+                      </div>
+                      <span className="absolute -top-2 -right-2 w-9 h-9 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-xs font-black text-slate-900">
+                        {item.step}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content Card */}
+                  <div className="flex-1 md:mt-6 md:text-center md:px-2">
+                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 hover:shadow-lg hover:border-red-200 transition-all duration-300">
+                      <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-slate-600 mb-4 italic">"{testimonial.comment}"</p>
-                <div>
-                  <p className="font-semibold text-slate-800">{testimonial.name}</p>
-                  <p className="text-sm text-slate-500">{testimonial.location}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="mt-10 sm:mt-14 text-center">
+            <Link
+              to="/cars"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-500 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-red-200 transition-all duration-300"
+            >
+              <span>Commencer ma réservation</span>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"/>
+                <path d="m12 5 7 7-7 7"/>
+              </svg>
+            </Link>
+            <p className="mt-4 text-sm text-slate-500">
+              Réservation rapide · Confirmation immédiate · Annulation gratuite
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
+            <span className="inline-flex items-center gap-2 text-red-600 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <path d="M12 17h.01"/>
+              </svg>
+              Foire aux questions
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-tight">
+              Tout ce que vous devez savoir
+            </h2>
+            <p className="text-slate-600 text-base sm:text-lg max-w-xl mx-auto">
+              Réponses claires et complètes pour vous aider à prendre la meilleure décision
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-3">
+            {faqs.map((item, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div
+                  key={item.q}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                    isOpen 
+                      ? 'bg-white border-red-200 shadow-lg shadow-red-100/50' 
+                      : 'bg-white border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300'
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 text-left"
+                    onClick={() => setOpenFaqIndex(isOpen ? -1 : idx)}
+                    aria-expanded={isOpen}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                        isOpen ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-500'
+                      }`}>
+                        <span className="text-sm font-bold">{String(idx + 1).padStart(2, '0')}</span>
+                      </div>
+                      <span className={`text-sm sm:text-base font-semibold transition-colors ${
+                        isOpen ? 'text-slate-900' : 'text-slate-700'
+                      }`}>
+                        {item.q}
+                      </span>
+                    </div>
+                    <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isOpen 
+                        ? 'bg-red-600 text-white rotate-180' 
+                        : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </div>
+                  </button>
+                  
+                  <div className={`transition-all duration-300 ease-in-out ${
+                    isOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
+                    <div className="px-5 sm:px-6 pb-5 sm:pb-6 pl-16 sm:pl-18">
+                      <div className="flex gap-3">
+                        <div className="w-px bg-red-200 shrink-0 mt-1" />
+                        <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                          {item.a}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-10 sm:mt-12 text-center">
+            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-slate-900">Vous avez d'autres questions ?</p>
+                  <p className="text-xs text-slate-500">Notre équipe est là pour vous aider</p>
                 </div>
               </div>
-            ))}
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors text-sm whitespace-nowrap"
+              >
+                Contactez-nous
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Client Count + Testimonials Marquee */}
+      <section className="py-10 sm:py-12 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-6 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Ils nous font confiance</p>
+                <div className="mt-3 flex items-end gap-3">
+                  <p className="text-4xl font-black text-slate-900 leading-none">{clientCount}</p>
+                  <p className="text-sm font-semibold text-slate-600 pb-1">clients satisfaits</p>
+                </div>
+                <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                  Des avis authentiques et une expérience de location fluide, partout au Maroc.
+                </p>
+                <div className="mt-4 flex items-center gap-2">
+                  <div className="flex items-center text-amber-500">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <IconStar key={n} className="w-4 h-4" filled />
+                    ))}
+                  </div>
+                  <span className="text-xs font-semibold text-slate-500">Note moyenne 4.9/5</span>
+                </div>
+
+                <a
+                  href="https://www.google.com/maps"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-red-600 transition-colors"
+                >
+                  <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white border border-slate-200 shadow-sm">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11z" />
+                      <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                  </span>
+                  Ouvrir sur Google Maps
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8 min-w-0">
+              <div className="relative overflow-hidden">
+                <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-16 bg-white z-10 pointer-events-none [mask-image:linear-gradient(to_right,black,transparent)]" aria-hidden />
+                <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-16 bg-white z-10 pointer-events-none [mask-image:linear-gradient(to_left,black,transparent)]" aria-hidden />
+
+                <div className="flex w-max cars-scroll-track" style={{ width: 'max-content' }}>
+                  {[...testimonials, ...testimonials].map((t, idx) => (
+                    <article
+                      key={`${t.name}-${idx}`}
+                      className="w-[280px] sm:w-[320px] md:w-[360px] shrink-0 mx-2 sm:mx-3"
+                    >
+                      <div className="h-full bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:shadow-lg hover:border-slate-300 transition-all">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-slate-900 truncate">{t.name}</p>
+                            <p className="text-xs text-slate-500">{t.city}</p>
+                          </div>
+                          <div className="flex items-center text-amber-500 shrink-0">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <IconStar
+                                key={i}
+                                className="w-4 h-4"
+                                filled={i < t.rating}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                          “{t.text}”
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -20,6 +20,11 @@ const IconPhone = ({ className = 'w-5 h-5' }) => (
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
   </svg>
 );
+
+
+
+
+
 const IconMapPin = ({ className = 'w-5 h-5' }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -58,6 +63,13 @@ const Booking = () => {
   const searchStartDate = searchParams.get('startDate');
   const searchEndDate = searchParams.get('endDate');
 
+  const inputBaseClassName =
+    'w-full rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition';
+  const selectBaseClassName =
+    'w-full rounded-xl px-4 py-3 text-slate-800 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition cursor-pointer appearance-none';
+  const inputSmallClassName =
+    'w-full rounded-xl px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition';
+
   const car = getCarById(carId) || cars[0];
 
   const [formData, setFormData] = useState({
@@ -77,6 +89,9 @@ const Booking = () => {
   });
 
   const [step, setStep] = useState(1);
+  const [promoCode, setPromoCode] = useState('');
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const calculateDays = () => {
     if (!formData.pickupDate || !formData.dropoffDate) return 0;
@@ -93,6 +108,7 @@ const Booking = () => {
     if (formData.gps) total += 50 * days;
     if (formData.childSeat) total += 30 * days;
     if (formData.insurance === 'premium') total += 100 * days;
+    if (promoApplied) total = Math.round(total * 0.9);
     
     return total;
   };
@@ -103,9 +119,13 @@ const Booking = () => {
       setStep(step + 1);
     } else {
       // Process booking
-      alert('Réservation confirmée !');
-      navigate('/');
+      setShowSuccessModal(true);
     }
+  };
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
   };
 
   const handleChange = (e) => {
@@ -116,8 +136,65 @@ const Booking = () => {
     });
   };
 
+  const canGoNextFromStep1 = () => {
+    const hasRequired =
+      formData.firstName &&
+      formData.lastName &&
+      formData.email &&
+      formData.phone &&
+      formData.licenseNumber &&
+      formData.pickupDate &&
+      formData.dropoffDate;
+
+    return hasRequired && calculateDays() > 0;
+  };
+
+  const handleApplyPromo = () => {
+    if (promoCode.trim().toUpperCase() === 'MAROC10') {
+      setPromoApplied(true);
+      alert('Code promo appliqué : -10% sur le total.');
+    } else {
+      setPromoApplied(false);
+      alert('Code promo invalide.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 min-w-0 overflow-x-hidden">
+      {showSuccessModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Réservation confirmée"
+        >
+          <div className="absolute inset-0 bg-slate-900/60" onClick={handleCloseSuccessModal} />
+          <div className="relative z-10 w-full max-w-md rounded-2xl bg-white border border-slate-200 shadow-xl p-5 sm:p-6">
+            <div className="flex items-start gap-3">
+              <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 shrink-0">
+                <IconShield className="w-6 h-6" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-lg font-bold text-slate-900">Réservation bien confirmée</h3>
+                <p className="text-sm text-slate-600 mt-1">
+                  Merci ! Votre réservation a été enregistrée. Vous allez être redirigé vers l'accueil.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex justify-end">
+              <button
+                type="button"
+                onClick={handleCloseSuccessModal}
+                className="px-4 py-2.5 rounded-xl font-semibold bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header — aligné avec Home/Cars (slate) */}
       <section className="relative text-white overflow-hidden rounded-b-2xl sm:rounded-b-3xl bg-slate-800">
         <div className="absolute inset-0 bg-slate-900/70" aria-hidden />
@@ -153,7 +230,7 @@ const Booking = () => {
               Options
             </span>
             <span className={`text-xs sm:text-sm ${step >= 3 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
-              Paiement
+              Confirmation
             </span>
           </div>
         </div>
@@ -178,7 +255,8 @@ const Booking = () => {
                         value={formData.firstName}
                         onChange={handleChange}
                         required
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        placeholder="Ex: Mohamed"
+                        className={inputBaseClassName}
                       />
                     </div>
                     <div>
@@ -192,7 +270,8 @@ const Booking = () => {
                         value={formData.lastName}
                         onChange={handleChange}
                         required
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        placeholder="Ex: Tolba"
+                        className={inputBaseClassName}
                       />
                     </div>
                   </div>
@@ -209,7 +288,8 @@ const Booking = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        placeholder="exemple@email.com"
+                        className={inputBaseClassName}
                       />
                     </div>
                     <div>
@@ -224,7 +304,7 @@ const Booking = () => {
                         onChange={handleChange}
                         required
                         placeholder="+212 6XX XXX XXX"
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        className={inputBaseClassName}
                       />
                     </div>
                   </div>
@@ -240,7 +320,8 @@ const Booking = () => {
                       value={formData.licenseNumber}
                       onChange={handleChange}
                       required
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                      placeholder="Ex: AB123456"
+                      className={inputBaseClassName}
                     />
                   </div>
 
@@ -258,7 +339,7 @@ const Booking = () => {
                         name="pickupLocation"
                         value={formData.pickupLocation}
                         onChange={handleChange}
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors appearance-none cursor-pointer"
+                        className={selectBaseClassName}
                       >
                         <option>Casablanca</option>
                         <option>Rabat</option>
@@ -277,7 +358,7 @@ const Booking = () => {
                         name="dropoffLocation"
                         value={formData.dropoffLocation}
                         onChange={handleChange}
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors appearance-none cursor-pointer"
+                        className={selectBaseClassName}
                       >
                         <option>Casablanca</option>
                         <option>Rabat</option>
@@ -301,7 +382,8 @@ const Booking = () => {
                         value={formData.pickupDate}
                         onChange={handleChange}
                         required
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        placeholder="JJ/MM/AAAA"
+                        className={inputBaseClassName}
                       />
                     </div>
                     <div>
@@ -315,7 +397,8 @@ const Booking = () => {
                         value={formData.dropoffDate}
                         onChange={handleChange}
                         required
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                        placeholder="JJ/MM/AAAA"
+                        className={inputBaseClassName}
                       />
                     </div>
                   </div>
@@ -417,51 +500,59 @@ const Booking = () => {
 
               {step === 3 && (
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Paiement</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Confirmation</h2>
 
                   <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex gap-3">
                     <IconInfo className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                     <p className="text-sm text-slate-700">
-                      Paiement sécurisé. Annulation gratuite jusqu'à 24h avant la prise en charge.
+                      Vérifiez vos informations. Annulation gratuite jusqu'à 24h avant la prise en charge.
                     </p>
                   </div>
 
-                  <div className="mb-4">
-                    <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                      <IconCreditCard className="w-4 h-4 text-slate-500" />
-                      Numéro de carte
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Date d'expiration</label>
-                      <input
-                        type="text"
-                        placeholder="MM/AA"
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
-                      />
+                  <div className="rounded-xl border border-slate-200 bg-white p-4 mb-6">
+                    <h3 className="text-sm font-bold text-slate-800 mb-3">Récapitulatif</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Client</span>
+                          <span className="font-semibold text-slate-800 truncate">{formData.firstName} {formData.lastName}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Email</span>
+                          <span className="font-semibold text-slate-800 truncate">{formData.email}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Téléphone</span>
+                          <span className="font-semibold text-slate-800 truncate">{formData.phone}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Prise en charge</span>
+                          <span className="font-semibold text-slate-800 truncate">{formData.pickupLocation}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Restitution</span>
+                          <span className="font-semibold text-slate-800 truncate">{formData.dropoffLocation}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Dates</span>
+                          <span className="font-semibold text-slate-800 truncate">
+                            {formData.pickupDate ? new Date(formData.pickupDate).toLocaleDateString('fr-FR') : '—'} → {formData.dropoffDate ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR') : '—'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">CVV</label>
-                      <input
-                        type="text"
-                        placeholder="123"
-                        className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
-                      />
+                    <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-sm font-bold text-slate-800">Total</span>
+                      <span className="text-lg font-bold text-red-600">{calculateTotal()} MAD</span>
                     </div>
                   </div>
 
                   <label className="flex items-start gap-2 mb-6">
                     <input type="checkbox" required className="mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500" />
                     <span className="text-sm text-slate-600">
-                      J'accepte les <a href="#" className="text-red-600 hover:underline">conditions générales</a> et
-                      la <a href="#" className="text-red-600 hover:underline">politique de confidentialité</a>
+                      Je confirme que mes informations sont correctes et j'accepte les <a href="#" className="text-red-600 hover:underline">conditions générales</a>.
                     </span>
                   </label>
                 </div>
@@ -482,7 +573,12 @@ const Booking = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                  disabled={step === 1 && !canGoNextFromStep1()}
+                  className={`px-5 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors ${
+                    step === 1 && !canGoNextFromStep1()
+                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      : 'bg-red-600 text-white hover:bg-red-700'
+                  }`}
                 >
                   {step === 3 ? 'Confirmer la réservation' : 'Suivant'}
                 </button>
@@ -492,12 +588,47 @@ const Booking = () => {
 
           {/* Récapitulatif */}
           <div className="lg:col-span-1 min-w-0">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 lg:sticky lg:top-4">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 lg:sticky lg:top-4 space-y-5">
               <h3 className="text-lg font-bold text-slate-800 mb-4">Récapitulatif</h3>
 
-              <div className="mb-4 pb-4 border-b border-slate-100">
-                <p className="font-semibold text-slate-800 mb-1">{car.name}</p>
-                <p className="text-sm text-slate-500">{car.category}</p>
+              <div className="flex gap-3 mb-2">
+                <div className="w-20 h-16 rounded-xl bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
+                  {car.image ? (
+                    <img
+                      src={car.image}
+                      alt={car.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs text-slate-400">Aperçu</span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-slate-800 truncate">{car.name}</p>
+                  <p className="text-sm text-slate-500">{car.category}</p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    {formData.pickupLocation} → {formData.dropoffLocation}
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-xs text-slate-500 mb-4 pb-4 border-b border-slate-100">
+                <div className="flex justify-between">
+                  <span>Début</span>
+                  <span className="font-medium">
+                    {formData.pickupDate
+                      ? new Date(formData.pickupDate).toLocaleDateString('fr-FR')
+                      : '—'}
+                  </span>
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span>Fin</span>
+                  <span className="font-medium">
+                    {formData.dropoffDate
+                      ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR')
+                      : '—'}
+                  </span>
+                </div>
               </div>
 
               {calculateDays() > 0 && (
@@ -527,9 +658,38 @@ const Booking = () => {
                     )}
                   </div>
 
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-lg font-bold text-slate-800">Total</span>
-                    <span className="text-2xl font-bold text-red-600">{calculateTotal()} MAD</span>
+                  <div className="space-y-3 mb-6">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                        Code promo
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={promoCode}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                          placeholder="Ex: MAROC10"
+                          className={`flex-1 ${inputSmallClassName}`}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyPromo}
+                          className="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors"
+                        >
+                          Appliquer
+                        </button>
+                      </div>
+                      {promoApplied && (
+                        <p className="mt-1 text-xs text-emerald-600 font-medium">
+                          Réduction de 10% appliquée.
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-bold text-slate-800">Total</span>
+                      <span className="text-2xl font-bold text-red-600">{calculateTotal()} MAD</span>
+                    </div>
                   </div>
                 </>
               )}

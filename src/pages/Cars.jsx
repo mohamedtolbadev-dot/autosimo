@@ -8,6 +8,12 @@ const IconHeart = ({ className = 'w-5 h-5', filled }) => (
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
 );
+const IconEye = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
 const IconSearch = ({ className = 'w-5 h-5' }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="11" cy="11" r="8" />
@@ -104,6 +110,7 @@ const Cars = () => {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' ou 'list'
   const [visibleCount, setVisibleCount] = useState(6); // Pagination simple
   const [favorites, setFavorites] = useState([]); // Liste des IDs favoris
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false); // Afficher uniquement les favoris
   
   // États de filtrage et tri
   const [filters, setFilters] = useState({
@@ -142,6 +149,9 @@ const Cars = () => {
         if (!max && car.price < min) return false;
       }
       
+      // Filtre "favoris uniquement"
+      if (showOnlyFavorites && !favorites.includes(car.id)) return false;
+
       // Recherche textuelle
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
@@ -165,7 +175,7 @@ const Cars = () => {
     }
 
     return result;
-  }, [allCarsData, filters, searchQuery, sortBy]);
+  }, [filters, searchQuery, sortBy, favorites, showOnlyFavorites]);
 
   const displayedCars = processedCars.slice(0, visibleCount);
 
@@ -241,6 +251,20 @@ const Cars = () => {
                     <option value="priceAsc">Prix: Croissant</option>
                     <option value="priceDesc">Prix: Décroissant</option>
                 </select>
+
+                {/* Bouton "Favoris" */}
+                <button
+                    type="button"
+                    onClick={() => setShowOnlyFavorites(prev => !prev)}
+                    className={`hidden sm:inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
+                      showOnlyFavorites
+                        ? 'bg-red-600 text-white border-red-600'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                    }`}
+                >
+                    <IconHeart className="w-4 h-4" filled={showOnlyFavorites} />
+                    {showOnlyFavorites ? 'Favoris' : 'Tous'}
+                </button>
 
                 {/* Toggle Vue */}
                 <div className="flex bg-slate-100 rounded-lg p-1 border border-slate-200">
@@ -335,16 +359,65 @@ const Cars = () => {
                     <option value="700">Plus de 700</option>
                   </select>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nombre de sièges</label>
+                  <select
+                    value={filters.seats}
+                    onChange={(e) => setFilters({ ...filters, seats: e.target.value })}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                  >
+                    <option value="all">Tous</option>
+                    <option value="4">4 sièges</option>
+                    <option value="5">5 sièges</option>
+                    <option value="7">7+ sièges</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Liste des Résultats */}
           <div className="lg:col-span-3">
-            <div className="mb-4 flex justify-between items-end">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <p className="text-sm text-slate-500">
                     <span className="font-bold text-slate-900">{processedCars.length}</span> résultats trouvés
+                    {showOnlyFavorites && (
+                      <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-red-50 text-red-700 px-2 py-0.5 text-[11px] font-semibold border border-red-100">
+                        <IconHeart className="w-3 h-3" filled />
+                        Favoris
+                      </span>
+                    )}
                 </p>
+
+                {/* Résumé des filtres actifs */}
+                {(filters.category !== 'all' ||
+                  filters.transmission !== 'all' ||
+                  filters.priceRange !== 'all' ||
+                  filters.seats !== 'all') && (
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    {filters.category !== 'all' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                        Catégorie: {filters.category}
+                      </span>
+                    )}
+                    {filters.transmission !== 'all' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                        Boîte: {filters.transmission}
+                      </span>
+                    )}
+                    {filters.priceRange !== 'all' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                        Budget: {filters.priceRange === '700' ? '700+ MAD' : filters.priceRange + ' MAD'}
+                      </span>
+                    )}
+                    {filters.seats !== 'all' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                        Sièges: {filters.seats}
+                      </span>
+                    )}
+                  </div>
+                )}
             </div>
 
             {displayedCars.length === 0 ? (
@@ -403,11 +476,20 @@ const Cars = () => {
                     {/* Content Section */}
                     <div className="p-5 flex flex-col flex-1 justify-between">
                       <div>
-                        <div className="flex justify-between items-start mb-2">
-                           <div>
-                                <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-red-600 transition-colors">{car.name}</h3>
-                                <p className="text-sm text-slate-500 font-medium">{car.category}</p>
-                           </div>
+                        <div className="flex justify-between items-start mb-2 gap-3">
+                          <div className="min-w-0">
+                            <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-red-600 transition-colors truncate">
+                              {car.name}
+                            </h3>
+                            <p className="text-sm text-slate-500 font-medium">{car.category}</p>
+                          </div>
+                          <Link
+                            to={`/cars/${car.id}`}
+                            aria-label="Voir les détails du véhicule"
+                            className="hidden sm:inline-flex items-center justify-center px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors shrink-0"
+                          >
+                            <IconEye className="w-4 h-4" />
+                          </Link>
                         </div>
 
                         {/* Specs Grid */}
@@ -431,28 +513,41 @@ const Cars = () => {
                         </div>
                       </div>
 
-                      {/* Footer: Prix + Action */}
-                      <div className={`mt-2 pt-4 border-t border-slate-100 flex items-center justify-between ${viewMode === 'list' ? 'sm:justify-end sm:gap-6' : ''}`}>
-                         <div className="text-right sm:text-left">
-                             <p className="text-xs text-slate-400 font-medium uppercase">À partir de</p>
-                             <div className="flex items-baseline gap-1">
-                                <span className="text-xl font-extrabold text-slate-900">{car.price}</span>
-                                <span className="text-xs font-bold text-slate-500">MAD/j</span>
-                             </div>
-                         </div>
-                         
-                         <Link
-                            to={car.available ? `/booking?car=${car.id}${searchLocation ? `&location=${searchLocation}` : ''}` : '#'}
-                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
-                                car.available
+                      {/* Footer: Prix + Actions */}
+                      <div
+                        className={`mt-2 pt-4 border-t border-slate-100 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${
+                          viewMode === 'list' ? 'sm:justify-end sm:gap-6' : ''
+                        }`}
+                      >
+                        <div className="flex sm:block justify-between items-baseline">
+                          <p className="text-xs text-slate-400 font-medium uppercase">À partir de</p>
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-extrabold text-slate-900">{car.price}</span>
+                            <span className="text-xs font-bold text-slate-500">MAD/j</span>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 w-full sm:w-auto justify-end">
+                          <Link
+                            to={
+                              car.available
+                                ? `/booking?car=${car.id}` +
+                                  (searchLocation ? `&location=${searchLocation}` : '') +
+                                  (searchStartDate ? `&startDate=${searchStartDate}` : '') +
+                                  (searchEndDate ? `&endDate=${searchEndDate}` : '')
+                                : '#'
+                            }
+                            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm flex-1 sm:flex-none ${
+                              car.available
                                 ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-red-200 hover:shadow-md'
                                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                             }`}
                             onClick={(e) => !car.available && e.preventDefault()}
-                        >
+                          >
                             Réserver
                             <IconArrowRight className="w-4 h-4" />
-                        </Link>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </article>

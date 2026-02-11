@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getCarById, getRentalOptions } from '../data/cars';
 
@@ -68,6 +69,20 @@ const CarDetails = () => {
   const car = getCarById(id);
   const rentalOptions = car ? getRentalOptions(car.price) : [];
 
+  const inputBaseClassName =
+    'w-full rounded-xl px-4 py-3 text-slate-800 placeholder:text-slate-400 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition';
+  const selectBaseClassName =
+    'w-full rounded-xl px-4 py-3 text-slate-800 bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/40 focus:border-red-500 focus:outline-none transition cursor-pointer appearance-none';
+
+  const [rentalForm, setRentalForm] = useState({
+    pickupLocation: 'Casablanca',
+    startDate: '',
+    endDate: ''
+  });
+
+  const isRentalFormValid =
+    Boolean(rentalForm.pickupLocation) && Boolean(rentalForm.startDate) && Boolean(rentalForm.endDate);
+
   if (!car) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
@@ -131,22 +146,52 @@ const CarDetails = () => {
             {/* Fiche véhicule */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
               <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
-                <div className="min-w-0">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">{car.name}</h1>
-                  <p className="text-slate-500">{car.category} • {car.year}</p>
+                <div className="min-w-0 space-y-1">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 leading-tight">
+                    {car.name}
+                  </h1>
+                  <p className="text-sm text-slate-500">
+                    {car.category} • {car.year}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="inline-flex items-center rounded-full bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 border border-slate-200">
+                      <IconFuel className="w-4 h-4 mr-1 text-slate-500" />
+                      {car.fuel}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 border border-slate-200">
+                      <IconCog className="w-4 h-4 mr-1 text-slate-500" />
+                      {car.transmission}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 border border-slate-200">
+                      <IconUsers className="w-4 h-4 mr-1 text-slate-500" />
+                      {car.seats} places
+                    </span>
+                  </div>
                 </div>
-                {car.available ? (
-                  <span className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl text-sm font-semibold shrink-0">
-                    Disponible
-                  </span>
-                ) : (
-                  <span className="bg-red-50 text-red-700 px-4 py-2 rounded-xl text-sm font-semibold shrink-0">
-                    Non disponible
-                  </span>
-                )}
+                <div className="flex flex-col items-end gap-2 shrink-0">
+                  {car.available ? (
+                    <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+                      Disponible
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                      <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
+                      Non disponible
+                    </span>
+                  )}
+                  <div className="text-right text-xs text-slate-500">
+                    <p>À partir de</p>
+                    <p className="text-lg font-bold text-slate-900">
+                      {car.price} <span className="text-xs font-semibold text-slate-600">MAD/jour</span>
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <p className="text-slate-600 mb-6 leading-relaxed">{car.description}</p>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                {car.description}
+              </p>
 
               {/* Specs — icônes et couleurs alignées */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
@@ -246,7 +291,11 @@ const CarDetails = () => {
                     <IconMapPin className="w-4 h-4 text-slate-500" />
                     Lieu de prise en charge
                   </label>
-                  <select className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors appearance-none cursor-pointer">
+                  <select
+                    className={selectBaseClassName}
+                    value={rentalForm.pickupLocation}
+                    onChange={(e) => setRentalForm({ ...rentalForm, pickupLocation: e.target.value })}
+                  >
                     <option>Casablanca</option>
                     <option>Rabat</option>
                     <option>Marrakech</option>
@@ -262,7 +311,10 @@ const CarDetails = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                    placeholder="JJ/MM/AAAA"
+                    value={rentalForm.startDate}
+                    onChange={(e) => setRentalForm({ ...rentalForm, startDate: e.target.value })}
+                    className={inputBaseClassName}
                   />
                 </div>
                 <div>
@@ -272,21 +324,31 @@ const CarDetails = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-800 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-colors"
+                    placeholder="JJ/MM/AAAA"
+                    value={rentalForm.endDate}
+                    onChange={(e) => setRentalForm({ ...rentalForm, endDate: e.target.value })}
+                    className={inputBaseClassName}
                   />
                 </div>
               </div>
 
               <Link
                 to={`/booking?car=${car.id}`}
-                className={`block w-full text-center py-3 rounded-xl font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                  car.available
-                    ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
+                aria-disabled={!car.available || !isRentalFormValid}
+                className={`block w-full text-center py-3 rounded-xl font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  car.available && isRentalFormValid
+                    ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md active:shadow-sm'
                     : 'bg-slate-200 text-slate-500 cursor-not-allowed'
                 }`}
-                onClick={(e) => !car.available && e.preventDefault()}
+                onClick={(e) => {
+                  if (!car.available || !isRentalFormValid) e.preventDefault();
+                }}
               >
-                {car.available ? 'Réserver maintenant' : 'Non disponible'}
+                {!car.available
+                  ? 'Non disponible'
+                  : !isRentalFormValid
+                    ? 'Compléter les dates'
+                    : 'Réserver maintenant'}
               </Link>
 
               <p className="text-xs text-slate-500 text-center mt-4">
