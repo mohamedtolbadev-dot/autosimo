@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getFeaturedCars } from '../data/cars';
+import MoroccoGallery from '../components/MoroccoGallery';
 
 // Icônes SVG inline
 const IconShield = ({ className = "w-8 h-8" }) => (
@@ -578,6 +579,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Morocco Gallery Section */}
+      <MoroccoGallery />
 
       {/* Booking Steps Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
