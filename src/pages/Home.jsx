@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getFeaturedCars } from '../data/cars';
-import MoroccoGallery from '../components/MoroccoGallery';
 
 // Icônes SVG inline
 const IconShield = ({ className = "w-8 h-8" }) => (
@@ -148,6 +147,49 @@ const Home = () => {
     {
       q: 'Puis-je ajouter un siège enfant ?',
       a: 'Oui, vous pouvez ajouter un siège enfant lors de la réservation (selon disponibilité).'
+    }
+  ];
+
+const steps = [
+    {
+      step: '01',
+      title: 'Choisissez',
+      desc: 'Sélectionnez votre véhicule idéal parmi notre flotte',
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m21 21-4.34-4.34"/><circle cx="10" cy="10" r="7"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><polyline points="13 2 13 9 20 9"/>
+        </svg>
+      )
+    },
+    {
+      step: '02',
+      title: 'Réservez',
+      desc: 'Remplissez vos informations et choisissez vos options',
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/>
+        </svg>
+      )
+    },
+    {
+      step: '03',
+      title: 'Confirmez',
+      desc: 'Recevez votre confirmation par email instantanément',
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><circle cx="18" cy="17" r="3"/><path d="m20.5 18.5 1 1"/>
+        </svg>
+      )
+    },
+    {
+      step: '04',
+      title: 'Partez',
+      desc: 'Retirez votre voiture et profitez de votre voyage',
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 13.1V16c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M2 12h6"/><path d="M12 2v6"/><path d="m15 5 3-3 3 3"/>
+        </svg>
+      )
     }
   ];
 
@@ -521,56 +563,56 @@ const Home = () => {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-7">
-                <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
-                      <IconShield className="w-5 h-5 text-red-600" />
+                <div className="rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50/70 p-3 sm:p-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+                      <IconShield className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900">Sécurité renforcée</p>
-                      <p className="text-xs text-slate-600">Systèmes modernes + entretien régulier</p>
+                      <p className="text-xs sm:text-sm font-bold text-slate-900">Sécurité renforcée</p>
+                      <p className="text-[10px] sm:text-xs text-slate-600">Systèmes modernes + entretien régulier</p>
                     </div>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
-                      <IconClock className="w-5 h-5 text-red-600" />
+                <div className="rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50/70 p-3 sm:p-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+                      <IconClock className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900">Assistance 24/7</p>
-                      <p className="text-xs text-slate-600">Support rapide pendant votre trajet</p>
+                      <p className="text-xs sm:text-sm font-bold text-slate-900">Assistance 24/7</p>
+                      <p className="text-[10px] sm:text-xs text-slate-600">Support rapide pendant votre trajet</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-3 text-slate-700">
-                  <div className="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center shrink-0 border border-red-100">
-                    <IconUsers className="w-4 h-4 text-red-600" />
+              <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <li className="flex items-center gap-2 sm:gap-3 text-slate-700">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-red-50 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 border border-red-100">
+                    <IconUsers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600" />
                   </div>
-                  <span className="text-sm sm:text-base">Sièges enfants et rehausseurs disponibles</span>
+                  <span className="text-xs sm:text-sm">Sièges enfants et rehausseurs disponibles</span>
                 </li>
-                <li className="flex items-center gap-3 text-slate-700">
-                  <div className="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center shrink-0 border border-red-100">
-                    <IconCar className="w-4 h-4 text-red-600" />
+                <li className="flex items-center gap-2 sm:gap-3 text-slate-700">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-red-50 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 border border-red-100">
+                    <IconCar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600" />
                   </div>
-                  <span className="text-sm sm:text-base">SUV & monospaces récents, parfaits pour la route</span>
+                  <span className="text-xs sm:text-sm">SUV & monospaces récents, parfaits pour la route</span>
                 </li>
               </ul>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <Link
                   to="/cars"
-                  className="inline-flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-red-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
                 >
                   Voir les véhicules familiaux
                   <IconArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold border border-slate-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base border border-slate-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
                 >
                   Besoin de conseils ?
                 </Link>
@@ -580,185 +622,96 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Morocco Gallery Section */}
-      <MoroccoGallery />
-
-      {/* Booking Steps Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white" />
-        
-        <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
-          <div className="text-center mb-10 sm:mb-14">
-            <span className="inline-flex items-center gap-2 text-red-600 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 20h9"/>
-                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-              </svg>
-              Processus simple
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-              Comment réserver votre véhicule ?
-            </h2>
-            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
-              4 étapes simples pour louer votre voiture et partir à l'aventure
-            </p>
-          </div>
-
-          {/* Steps Diagram */}
-          <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4">
-              {[
-                {
-                  step: '01',
-                  title: 'Choisissez',
-                  desc: 'Sélectionnez votre véhicule idéal parmi notre flotte',
-                  icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="m21 21-4.34-4.34"/>
-                      <circle cx="10" cy="10" r="7"/>
-                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
-                      <polyline points="13 2 13 9 20 9"/>
-                    </svg>
-                  )
-                },
-                {
-                  step: '02',
-                  title: 'Réservez',
-                  desc: 'Remplissez vos informations et choisissez vos options',
-                  icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="16" y1="2" x2="16" y2="6"/>
-                      <line x1="8" y1="2" x2="8" y2="6"/>
-                      <line x1="3" y1="10" x2="21" y2="10"/>
-                      <path d="m9 16 2 2 4-4"/>
-                    </svg>
-                  )
-                },
-                {
-                  step: '03',
-                  title: 'Confirmez',
-                  desc: 'Recevez votre confirmation par email instantanément',
-                  icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                      <polyline points="22,6 12,13 2,6"/>
-                      <circle cx="18" cy="17" r="3"/>
-                      <path d="m20.5 18.5 1 1"/>
-                    </svg>
-                  )
-                },
-                {
-                  step: '04',
-                  title: 'Partez',
-                  desc: 'Retirez votre voiture et profitez de votre voyage',
-                  icon: (
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 13.1V16c0 .6.4 1 1 1h2"/>
-                      <circle cx="7" cy="17" r="2"/>
-                      <circle cx="17" cy="17" r="2"/>
-                      <path d="M2 12h6"/>
-                      <path d="M12 2v6"/>
-                      <path d="m15 5 3-3 3 3"/>
-                    </svg>
-                  )
-                }
-              ].map((item, idx) => (
-                <div key={item.step} className="relative flex md:flex-col items-start md:items-center gap-4 md:gap-0">
-                  {/* Broken/Twisted arrows between steps */}
-                  {idx < 3 && (
-                    <>
-                      {/* Desktop: arrows from step to step */}
-                      <div className="hidden md:block absolute top-10 left-1/2 translate-x-[52px] z-0 pointer-events-none" aria-hidden>
-                        <svg width="170" height="64" viewBox="0 0 170 64" fill="none">
-                          <path
-                            d="M2 48 C 40 8, 78 8, 92 32 S 132 56, 162 18"
-                            stroke="#ef4444"
-                            strokeOpacity="0.55"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeDasharray="9 8"
-                          />
-                          <path
-                            d="M156 12 L162 18 L154 22"
-                            stroke="#ef4444"
-                            strokeOpacity="0.8"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-
-                      {/* Mobile: arrows down */}
-                      <div className="md:hidden absolute left-6 top-[64px] z-0 pointer-events-none" aria-hidden>
-                        <svg width="64" height="140" viewBox="0 0 64 140" fill="none">
-                          <path
-                            d="M46 2 C 18 28, 54 46, 22 74 S 50 118, 18 134"
-                            stroke="#ef4444"
-                            strokeOpacity="0.45"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeDasharray="9 8"
-                          />
-                          <path
-                            d="M12 128 L18 134 L10 136"
-                            stroke="#ef4444"
-                            strokeOpacity="0.8"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Step Node */}
-                  <div className="relative z-10 shrink-0">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white border border-slate-200 shadow-lg flex items-center justify-center relative group">
-                      <div className="w-12 h-12 md:w-14 md:h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                        {item.icon}
-                      </div>
-                      <span className="absolute -top-2 -right-2 w-9 h-9 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-xs font-black text-slate-900">
-                        {item.step}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content Card */}
-                  <div className="flex-1 md:mt-6 md:text-center md:px-2">
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 hover:shadow-lg hover:border-red-200 transition-all duration-300">
-                      <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
-                      <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA Button */}
-          <div className="mt-10 sm:mt-14 text-center">
-            <Link
-              to="/cars"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-500 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-red-200 transition-all duration-300"
-            >
-              <span>Commencer ma réservation</span>
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"/>
-                <path d="m12 5 7 7-7 7"/>
-              </svg>
-            </Link>
-            <p className="mt-4 text-sm text-slate-500">
-              Réservation rapide · Confirmation immédiate · Annulation gratuite
-            </p>
-          </div>
+    <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50/50 to-white" />
+      
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center gap-2 text-red-600 text-xs font-bold uppercase tracking-widest mb-4 bg-red-50 px-4 py-2 rounded-full">
+            Simple & Rapide
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">
+            Comment ça <span className="text-red-600">marche ?</span>
+          </h2>
         </div>
-      </section>
+
+        {/* Steps Grid / Timeline */}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-6 relative">
+          {steps.map((item, idx) => (
+            <div key={item.step} className="flex-1 relative group">
+              
+              {/* السهم الملتوي - يظهر فقط في الشاشات الكبيرة */}
+              {idx < steps.length - 1 && (
+                <div className="hidden lg:block absolute top-10 left-[70%] w-[70%] h-12 z-0">
+                  <svg width="100%" height="100%" viewBox="0 0 150 50" fill="none">
+                    <path 
+                      d="M10 30C40 5 110 5 140 25" 
+                      stroke={`url(#grad${idx})`} 
+                      strokeWidth="2.5" 
+                      strokeDasharray="6 4"
+                      strokeLinecap="round"
+                    />
+                    <path d="M132 22L140 25L135 15" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <defs>
+                      <linearGradient id={`grad${idx}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#ef4444" />
+                        <stop offset="100%" stopColor="#fca5a5" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              )}
+
+              {/* محتوى الخطوة */}
+              <div className="flex flex-row lg:flex-col items-start lg:items-center gap-6 lg:gap-0">
+                
+                {/* الجزء الأيسر في الموبايل / العلوي في الكمبيوتر (الأيقونة والرقم) */}
+                <div className="relative shrink-0 lg:mb-8">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-white border border-slate-200 shadow-xl flex items-center justify-center relative z-10 group-hover:border-red-500 transition-all duration-300">
+                    <div className="w-11 h-11 lg:w-14 lg:h-14 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                      {item.icon}
+                    </div>
+                    {/* الرقم */}
+                    <span className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-md">
+                      {item.step}
+                    </span>
+                  </div>
+                  
+                  {/* خط الربط الرأسي للموبايل فقط */}
+                  {idx < steps.length - 1 && (
+                    <div className="lg:hidden absolute top-20 left-1/2 -translate-x-1/2 w-0.5 h-full bg-dashed border-l-2 border-dashed border-slate-200 z-0 py-4" />
+                  )}
+                </div>
+
+                {/* الجزء الأيمن في الموبايل / السفلي في الكمبيوتر (النص) */}
+                <div className="flex-1 lg:text-center pb-12 lg:pb-0">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 lg:mb-4 group-hover:text-red-600 transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm lg:text-base leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-12 lg:mt-20 text-center">
+          <Link
+            to="/cars"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-red-100 transition-all hover:-translate-y-1"
+          >
+            Commencer ma réservation
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14m-7-7 7 7-7 7"/>
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </section>
 
       {/* FAQ Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white">

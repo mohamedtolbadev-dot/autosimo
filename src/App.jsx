@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'; // 1. Ajout de useLocation
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -10,11 +10,21 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
+// 2. Création du composant qui gère le scroll
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]); // S'active à chaque changement de route
+
+  return null;
+}
+
 function App() {
   const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
-    // Afficher la notification après 1 seconde
     const timer = setTimeout(() => {
       setShowNotification(true);
     }, 1000);
@@ -24,6 +34,9 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* 3. Intégration du composant ici, DANS le Router */}
+      <ScrollToTop /> 
+      
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">
@@ -39,7 +52,7 @@ function App() {
         </main>
         <Footer />
 
-        {/* Notification promotionnelle en bas */}
+        {/* Notification promotionnelle */}
         {showNotification && (
           <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-50">
             <div className="bg-gradient-to-r from-red-600 to-red-500 text-white rounded-2xl shadow-2xl shadow-red-200 p-4 pr-10 relative animate-bounce-in">
@@ -54,7 +67,6 @@ function App() {
               </button>
               
               <div className="flex items-start gap-3">
-               
                 <div>
                   <p className="font-bold text-sm">🎉 Offre spéciale !</p>
                   <p className="text-sm text-white/90 mt-1">
