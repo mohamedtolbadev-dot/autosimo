@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { cars as allCarsData } from '../data/cars';
 
@@ -117,10 +117,31 @@ const Cars = () => {
     category: 'all',
     transmission: 'all',
     priceRange: 'all',
-    seats: 'all'
+    seats: 'all',
+    fuel: 'all'
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('recommended'); // 'priceAsc', 'priceDesc', 'recommended'
+
+  // Persistance des favoris (localStorage)
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('favorites');
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) setFavorites(parsed);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('favorites', JSON.stringify(favorites));
+    } catch {
+      // ignore
+    }
+  }, [favorites]);
 
   const searchLocation = searchParams.get('location');
   const searchStartDate = searchParams.get('startDate');
@@ -143,6 +164,7 @@ const Cars = () => {
       if (filters.category !== 'all' && car.category !== filters.category) return false;
       if (filters.transmission !== 'all' && car.transmission !== filters.transmission) return false;
       if (filters.seats !== 'all' && car.seats.toString() !== filters.seats) return false;
+      if (filters.fuel !== 'all' && car.fuel !== filters.fuel) return false;
       if (filters.priceRange !== 'all') {
         const [min, max] = filters.priceRange.split('-').map(Number);
         if (max && (car.price < min || car.price > max)) return false;
@@ -155,8 +177,21 @@ const Cars = () => {
       // Recherche textuelle
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        return car.name.toLowerCase().includes(query) || 
-               car.category.toLowerCase().includes(query);
+        const haystacks = [
+          car.name,
+          car.category,
+          car.transmission,
+          car.fuel,
+          String(car.price),
+          String(car.seats),
+          String(car.year)
+        ]
+          .filter(Boolean)
+          .map((v) => String(v).toLowerCase());
+        const features = Array.isArray(car.features)
+          ? car.features.map((f) => String(f).toLowerCase())
+          : [];
+        return haystacks.some((h) => h.includes(query)) || features.some((f) => f.includes(query));
       }
       return true;
     });
@@ -303,9 +338,9 @@ const Cars = () => {
                     <IconSliders className="w-5 h-5 text-red-600" />
                     Filtres
                 </h2>
-                {(filters.category !== 'all' || filters.transmission !== 'all' || filters.priceRange !== 'all' || filters.seats !== 'all') && (
+                {(filters.category !== 'all' || filters.transmission !== 'all' || filters.priceRange !== 'all' || filters.seats !== 'all' || filters.fuel !== 'all') && (
                     <button 
-                        onClick={() => setFilters({ category: 'all', transmission: 'all', priceRange: 'all', seats: 'all' })}
+                        onClick={() => setFilters({ category: 'all', transmission: 'all', priceRange: 'all', seats: 'all', fuel: 'all' })}
                         className="text-xs text-red-600 font-semibold hover:underline"
                     >
                         Reset
@@ -377,6 +412,19 @@ const Cars = () => {
                     <option value="7">7+ sièges</option>
                   </select>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Carburant</label>
+                  <select
+                    value={filters.fuel}
+                    onChange={(e) => setFilters({ ...filters, fuel: e.target.value })}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                  >
+                    <option value="all">Tous</option>
+                    <option value="Essence">Essence</option>
+                    <option value="Diesel">Diesel</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -398,7 +446,8 @@ const Cars = () => {
                 {(filters.category !== 'all' ||
                   filters.transmission !== 'all' ||
                   filters.priceRange !== 'all' ||
-                  filters.seats !== 'all') && (
+                  filters.seats !== 'all' ||
+                  filters.fuel !== 'all') && (
                   <div className="flex flex-wrap gap-2 text-xs">
                     {filters.category !== 'all' && (
                       <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
@@ -420,6 +469,11 @@ const Cars = () => {
                         Sièges: {filters.seats}
                       </span>
                     )}
+                    {filters.fuel !== 'all' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                        Carburant: {filters.fuel}
+                      </span>
+                    )}
                   </div>
                 )}
             </div>
@@ -433,7 +487,7 @@ const Cars = () => {
                 <p className="text-slate-500 mb-6">Essayez d'ajuster vos filtres ou votre recherche.</p>
                 <button
                   onClick={() => {
-                      setFilters({ category: 'all', transmission: 'all', priceRange: 'all', seats: 'all' });
+                      setFilters({ category: 'all', transmission: 'all', priceRange: 'all', seats: 'all', fuel: 'all' });
                       setSearchQuery('');
                   }}
                   className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors"
@@ -544,7 +598,7 @@ const Cars = () => {
                           <Link
                             to={`/cars/${car.id}`}
                             aria-label="Voir les détails du véhicule"
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium"
+                            className="inline-flex items-center justify-center px-1 py-2.5 rounded-lg border border-transparent text-[#101424] bg-transparent underline underline-offset-4 hover:opacity-80 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium"
                           >
                             Détail
                           </Link>
@@ -557,10 +611,10 @@ const Cars = () => {
                                   (searchEndDate ? `&endDate=${searchEndDate}` : '')
                                 : '#'
                             }
-                            className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm flex-1 sm:flex-none focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                            className={`inline-flex items-center justify-center gap-2 px-1 py-2.5 rounded-lg text-sm font-bold transition-all shadow-none flex-1 sm:flex-none focus:outline-none focus:ring-2 focus:ring-red-500 underline underline-offset-4 ${
                               car.available
-                                ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-red-200 hover:shadow-md'
-                                : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                ? 'bg-transparent text-red-600 hover:opacity-80'
+                                : 'bg-transparent text-slate-400 cursor-not-allowed no-underline'
                             }`}
                             onClick={(e) => !car.available && e.preventDefault()}
                           >

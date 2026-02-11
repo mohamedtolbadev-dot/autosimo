@@ -195,513 +195,114 @@ const Booking = () => {
         </div>
       )}
 
-      {/* Header — aligné avec Home/Cars (slate) */}
+      {/* Header */}
       <section className="relative text-white overflow-hidden rounded-b-2xl sm:rounded-b-3xl bg-slate-800">
         <div className="absolute inset-0 bg-slate-900/70" aria-hidden />
-        <div className="container relative z-10 mx-auto px-4 sm:px-6 max-w-6xl py-10 sm:py-14 min-w-0">
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 max-w-6xl py-8 sm:py-14 min-w-0">
           <p className="text-slate-300 text-xs sm:text-sm font-medium uppercase tracking-wider mb-2">Réservation</p>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2 text-white">Complétez votre réservation</h1>
-          <p className="text-slate-200 text-base sm:text-lg">En quelques étapes — informations, options, paiement.</p>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2 text-white">Complétez votre réservation</h1>
+          <p className="text-slate-200 text-sm sm:text-lg">En quelques étapes — informations, options, paiement.</p>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-6 sm:py-8 min-w-0">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-4 sm:py-8 min-w-0">
         {/* Étapes */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-center px-2">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-colors ${
                   s <= step ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-500'
                 }`}>
                   {s}
                 </div>
                 {s < 3 && (
-                  <div className={`w-16 sm:w-24 h-1 transition-colors ${s < step ? 'bg-red-600' : 'bg-slate-200'}`} />
+                  <div className={`w-10 sm:w-16 lg:w-24 h-1 transition-colors ${s < step ? 'bg-red-600' : 'bg-slate-200'}`} />
                 )}
               </div>
             ))}
           </div>
-          <div className="flex justify-center mt-2 gap-8 sm:gap-20">
-            <span className={`text-xs sm:text-sm ${step >= 1 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
+          <div className="flex justify-center mt-2 gap-4 sm:gap-8 lg:gap-20">
+            <span className={`text-[10px] sm:text-xs lg:text-sm ${step >= 1 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
               Informations
             </span>
-            <span className={`text-xs sm:text-sm ${step >= 2 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
+            <span className={`text-[10px] sm:text-xs lg:text-sm ${step >= 2 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
               Options
             </span>
-            <span className={`text-xs sm:text-sm ${step >= 3 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
+            <span className={`text-[10px] sm:text-xs lg:text-sm ${step >= 3 ? 'text-red-600 font-semibold' : 'text-slate-500'}`}>
               Confirmation
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {/* Formulaire */}
-          <div className="lg:col-span-2 min-w-0">
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
-              {step === 1 && (
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Vos informations</h2>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconUser className="w-4 h-4 text-slate-500" />
-                        Prénom *
-                      </label>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                        placeholder="Ex: Mohamed"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconUser className="w-4 h-4 text-slate-500" />
-                        Nom *
-                      </label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        placeholder="Ex: Tolba"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconMail className="w-4 h-4 text-slate-500" />
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="exemple@email.com"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconPhone className="w-4 h-4 text-slate-500" />
-                        Téléphone *
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        placeholder="+212 6XX XXX XXX"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                      <IconCreditCard className="w-4 h-4 text-slate-500" />
-                      Numéro de permis de conduire *
-                    </label>
-                    <input
-                      type="text"
-                      name="licenseNumber"
-                      value={formData.licenseNumber}
-                      onChange={handleChange}
-                      required
-                      placeholder="Ex: AB123456"
-                      className={inputBaseClassName}
-                    />
-                  </div>
-
-                  <hr className="my-6 border-slate-200" />
-
-                  <h3 className="text-lg font-bold text-slate-800 mb-4">Détails de location</h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconMapPin className="w-4 h-4 text-slate-500" />
-                        Lieu de prise en charge *
-                      </label>
-                      <select
-                        name="pickupLocation"
-                        value={formData.pickupLocation}
-                        onChange={handleChange}
-                        className={selectBaseClassName}
-                      >
-                        <option>Casablanca</option>
-                        <option>Rabat</option>
-                        <option>Marrakech</option>
-                        <option>Fès</option>
-                        <option>Tanger</option>
-                        <option>Agadir</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconMapPin className="w-4 h-4 text-slate-500" />
-                        Lieu de restitution *
-                      </label>
-                      <select
-                        name="dropoffLocation"
-                        value={formData.dropoffLocation}
-                        onChange={handleChange}
-                        className={selectBaseClassName}
-                      >
-                        <option>Casablanca</option>
-                        <option>Rabat</option>
-                        <option>Marrakech</option>
-                        <option>Fès</option>
-                        <option>Tanger</option>
-                        <option>Agadir</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconCalendar className="w-4 h-4 text-slate-500" />
-                        Date de début *
-                      </label>
-                      <input
-                        type="date"
-                        name="pickupDate"
-                        value={formData.pickupDate}
-                        onChange={handleChange}
-                        required
-                        placeholder="JJ/MM/AAAA"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                    <div>
-                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                        <IconCalendar className="w-4 h-4 text-slate-500" />
-                        Date de fin *
-                      </label>
-                      <input
-                        type="date"
-                        name="dropoffDate"
-                        value={formData.dropoffDate}
-                        onChange={handleChange}
-                        required
-                        placeholder="JJ/MM/AAAA"
-                        className={inputBaseClassName}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {step === 2 && (
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Options supplémentaires</h2>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:border-slate-300 transition-colors">
-                      <label className="flex items-start gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          name="gps"
-                          checked={formData.gps}
-                          onChange={handleChange}
-                          className="mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500"
-                        />
-                        <div className="flex-1">
-                          <div className="flex flex-wrap justify-between items-start gap-2">
-                            <div>
-                              <p className="font-semibold text-slate-800">GPS</p>
-                              <p className="text-sm text-slate-600">Système de navigation</p>
-                            </div>
-                            <p className="text-red-600 font-bold">+50 MAD/jour</p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-
-                    <div className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:border-slate-300 transition-colors">
-                      <label className="flex items-start gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          name="childSeat"
-                          checked={formData.childSeat}
-                          onChange={handleChange}
-                          className="mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500"
-                        />
-                        <div className="flex-1">
-                          <div className="flex flex-wrap justify-between items-start gap-2">
-                            <div>
-                              <p className="font-semibold text-slate-800">Siège bébé</p>
-                              <p className="text-sm text-slate-600">Siège pour enfant (0-4 ans)</p>
-                            </div>
-                            <p className="text-red-600 font-bold">+30 MAD/jour</p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-slate-800 mb-4">Assurance</h3>
-                  <div className="space-y-3">
-                    <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-colors ${formData.insurance === 'basic' ? 'border-red-500 bg-red-50/30' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'}`}>
-                      <input
-                        type="radio"
-                        name="insurance"
-                        value="basic"
-                        checked={formData.insurance === 'basic'}
-                        onChange={handleChange}
-                        className="mt-1 border-slate-300 text-red-600 focus:ring-red-500"
-                      />
-                      <div className="flex-1">
-                        <div className="flex flex-wrap justify-between items-start gap-2">
-                          <div>
-                            <p className="font-semibold text-slate-800">Assurance de base</p>
-                            <p className="text-sm text-slate-600">Inclus dans le prix</p>
-                          </div>
-                          <p className="text-emerald-600 font-bold">Inclus</p>
-                        </div>
-                      </div>
-                    </label>
-
-                    <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-colors ${formData.insurance === 'premium' ? 'border-red-500 bg-red-50/30' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'}`}>
-                      <input
-                        type="radio"
-                        name="insurance"
-                        value="premium"
-                        checked={formData.insurance === 'premium'}
-                        onChange={handleChange}
-                        className="mt-1 border-slate-300 text-red-600 focus:ring-red-500"
-                      />
-                      <div className="flex-1">
-                        <div className="flex flex-wrap justify-between items-start gap-2">
-                          <div>
-                            <p className="font-semibold text-slate-800">Assurance premium</p>
-                            <p className="text-sm text-slate-600">Zéro franchise, couverture maximale</p>
-                          </div>
-                          <p className="text-red-600 font-bold">+100 MAD/jour</p>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              )}
-
-              {step === 3 && (
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Confirmation</h2>
-
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex gap-3">
-                    <IconInfo className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                    <p className="text-sm text-slate-700">
-                      Vérifiez vos informations. Annulation gratuite jusqu'à 24h avant la prise en charge.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-200 bg-white p-4 mb-6">
-                    <h3 className="text-sm font-bold text-slate-800 mb-3">Récapitulatif</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Client</span>
-                          <span className="font-semibold text-slate-800 truncate">{formData.firstName} {formData.lastName}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Email</span>
-                          <span className="font-semibold text-slate-800 truncate">{formData.email}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Téléphone</span>
-                          <span className="font-semibold text-slate-800 truncate">{formData.phone}</span>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Prise en charge</span>
-                          <span className="font-semibold text-slate-800 truncate">{formData.pickupLocation}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Restitution</span>
-                          <span className="font-semibold text-slate-800 truncate">{formData.dropoffLocation}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">Dates</span>
-                          <span className="font-semibold text-slate-800 truncate">
-                            {formData.pickupDate ? new Date(formData.pickupDate).toLocaleDateString('fr-FR') : '—'} → {formData.dropoffDate ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR') : '—'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-sm font-bold text-slate-800">Total</span>
-                      <span className="text-lg font-bold text-red-600">{calculateTotal()} MAD</span>
-                    </div>
-                  </div>
-
-                  <label className="flex items-start gap-2 mb-6">
-                    <input type="checkbox" required className="mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500" />
-                    <span className="text-sm text-slate-600">
-                      Je confirme que mes informations sont correctes et j'accepte les <a href="#" className="text-red-600 hover:underline">conditions générales</a>.
-                    </span>
-                  </label>
-                </div>
-              )}
-
-              <div className="flex justify-between mt-8 pt-6 border-t border-slate-200">
-                <button
-                  type="button"
-                  onClick={() => step > 1 && setStep(step - 1)}
-                  className={`px-5 py-2.5 rounded-xl font-semibold transition-colors ${
-                    step === 1
-                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500'
-                  }`}
-                  disabled={step === 1}
-                >
-                  Précédent
-                </button>
-                <button
-                  type="submit"
-                  disabled={step === 1 && !canGoNextFromStep1()}
-                  className={`px-5 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors ${
-                    step === 1 && !canGoNextFromStep1()
-                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                      : 'bg-red-600 text-white hover:bg-red-700'
-                  }`}
-                >
-                  {step === 3 ? 'Confirmer la réservation' : 'Suivant'}
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Récapitulatif */}
-          <div className="lg:col-span-1 min-w-0">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 lg:sticky lg:top-4 space-y-5">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">Récapitulatif</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {/* Récapitulatif - Sidebar (top on mobile) */}
+          <div className="lg:col-span-1 order-first lg:order-last min-w-0">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 lg:p-6 lg:sticky lg:top-4 space-y-4 sm:space-y-5">
+              <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-2 sm:mb-4">Récapitulatif</h3>
 
               <div className="flex gap-3 mb-2">
-                <div className="w-20 h-16 rounded-xl bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
+                <div className="w-16 h-14 sm:w-20 sm:h-16 rounded-xl bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
                   {car.image ? (
-                    <img
-                      src={car.image}
-                      alt={car.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={car.image} alt={car.name} className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xs text-slate-400">Aperçu</span>
+                    <span className="text-[10px] sm:text-xs text-slate-400">Aperçu</span>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-slate-800 truncate">{car.name}</p>
-                  <p className="text-sm text-slate-500">{car.category}</p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    {formData.pickupLocation} → {formData.dropoffLocation}
-                  </p>
+                  <p className="font-semibold text-slate-800 text-sm sm:text-base truncate">{car.name}</p>
+                  <p className="text-xs sm:text-sm text-slate-500">{car.category}</p>
+                  <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1">{formData.pickupLocation} → {formData.dropoffLocation}</p>
                 </div>
               </div>
 
-              <div className="text-xs text-slate-500 mb-4 pb-4 border-b border-slate-100">
+              <div className="text-xs sm:text-sm text-slate-500 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-slate-100">
                 <div className="flex justify-between">
                   <span>Début</span>
-                  <span className="font-medium">
-                    {formData.pickupDate
-                      ? new Date(formData.pickupDate).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </span>
+                  <span className="font-medium">{formData.pickupDate ? new Date(formData.pickupDate).toLocaleDateString('fr-FR') : '—'}</span>
                 </div>
                 <div className="flex justify-between mt-1">
                   <span>Fin</span>
-                  <span className="font-medium">
-                    {formData.dropoffDate
-                      ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </span>
+                  <span className="font-medium">{formData.dropoffDate ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR') : '—'}</span>
                 </div>
               </div>
 
               {calculateDays() > 0 && (
                 <>
-                  <div className="space-y-2 mb-4 pb-4 border-b border-slate-100">
-                    <div className="flex justify-between text-sm">
+                  <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-slate-100">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-slate-600">Location ({calculateDays()} jour{calculateDays() > 1 ? 's' : ''})</span>
                       <span className="font-semibold text-slate-800">{car.price * calculateDays()} MAD</span>
                     </div>
-                    {formData.gps && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">GPS</span>
-                        <span className="font-semibold text-slate-800">{50 * calculateDays()} MAD</span>
-                      </div>
-                    )}
-                    {formData.childSeat && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">Siège bébé</span>
-                        <span className="font-semibold text-slate-800">{30 * calculateDays()} MAD</span>
-                      </div>
-                    )}
-                    {formData.insurance === 'premium' && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">Assurance premium</span>
-                        <span className="font-semibold text-slate-800">{100 * calculateDays()} MAD</span>
-                      </div>
-                    )}
+                    {formData.gps && <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">GPS</span><span className="font-semibold text-slate-800">{50 * calculateDays()} MAD</span></div>}
+                    {formData.childSeat && <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Siège bébé</span><span className="font-semibold text-slate-800">{30 * calculateDays()} MAD</span></div>}
+                    {formData.insurance === 'premium' && <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Assurance premium</span><span className="font-semibold text-slate-800">{100 * calculateDays()} MAD</span></div>}
                   </div>
-
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">
-                        Code promo
-                      </label>
+                      <label className="block text-[10px] sm:text-xs font-medium text-slate-600 mb-1">Code promo</label>
                       <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={promoCode}
-                          onChange={(e) => setPromoCode(e.target.value)}
-                          placeholder="Ex: MAROC10"
-                          className={`flex-1 ${inputSmallClassName}`}
-                        />
-                        <button
-                          type="button"
-                          onClick={handleApplyPromo}
-                          className="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors"
-                        >
-                          Appliquer
-                        </button>
+                        <input type="text" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} placeholder="Ex: MAROC10" className={`flex-1 ${inputSmallClassName}`} />
+                        <button type="button" onClick={handleApplyPromo} className="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors">Appliquer</button>
                       </div>
-                      {promoApplied && (
-                        <p className="mt-1 text-xs text-emerald-600 font-medium">
-                          Réduction de 10% appliquée.
-                        </p>
-                      )}
+                      {promoApplied && <p className="mt-1 text-xs text-emerald-600 font-medium">Réduction de 10% appliquée.</p>}
                     </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-bold text-slate-800">Total</span>
-                      <span className="text-2xl font-bold text-red-600">{calculateTotal()} MAD</span>
+                    <div className="flex justify-between items-center pt-2">
+                      <span className="text-base sm:text-lg font-bold text-slate-800">Total</span>
+                      <span className="text-xl sm:text-2xl font-bold text-red-600">{calculateTotal()} MAD</span>
                     </div>
                   </div>
                 </>
               )}
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                <div className="flex gap-3">
-                  <div className="inline-flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-xl shrink-0">
-                    <IconShield className="w-5 h-5" />
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4">
+                <div className="flex gap-2 sm:gap-3">
+                  <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-red-50 text-red-600 rounded-xl shrink-0">
+                    <IconShield className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="text-sm text-slate-700 min-w-0">
+                  <div className="text-xs sm:text-sm text-slate-700 min-w-0">
                     <p className="font-semibold text-slate-800 mb-1">Inclus :</p>
-                    <ul className="space-y-1 text-slate-600">
+                    <ul className="space-y-0.5 sm:space-y-1 text-slate-600 text-xs sm:text-sm">
                       <li>• Assurance tous risques</li>
                       <li>• Kilométrage illimité</li>
                       <li>• Assistance 24/7</li>
@@ -711,6 +312,156 @@ const Booking = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Formulaire */}
+          <div className="lg:col-span-2 min-w-0 order-last lg:order-first">
+            <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 lg:p-6">
+              {step === 1 && (
+                <div>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">Vos informations</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconUser className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Prénom *</label>
+                      <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required placeholder="Ex: Mohamed" className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconUser className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Nom *</label>
+                      <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required placeholder="Ex: Tolba" className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconMail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Email *</label>
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="exemple@email.com" className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Téléphone *</label>
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+212 6XX XXX XXX" className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                  </div>
+                  <div className="mb-3 sm:mb-4">
+                    <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconCreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Numéro de permis de conduire *</label>
+                    <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} required placeholder="Ex: AB123456" className={`${inputBaseClassName} text-sm sm:text-base`} />
+                  </div>
+                  <hr className="my-4 sm:my-6 border-slate-200" />
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-3 sm:mb-4">Détails de location</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconMapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Lieu de prise en charge *</label>
+                      <select name="pickupLocation" value={formData.pickupLocation} onChange={handleChange} className={`${selectBaseClassName} text-sm sm:text-base`}>
+                        <option>Casablanca</option><option>Rabat</option><option>Marrakech</option><option>Fès</option><option>Tanger</option><option>Agadir</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconMapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Lieu de restitution *</label>
+                      <select name="dropoffLocation" value={formData.dropoffLocation} onChange={handleChange} className={`${selectBaseClassName} text-sm sm:text-base`}>
+                        <option>Casablanca</option><option>Rabat</option><option>Marrakech</option><option>Fès</option><option>Tanger</option><option>Agadir</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconCalendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Date de début *</label>
+                      <input type="date" name="pickupDate" value={formData.pickupDate} onChange={handleChange} required className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2"><IconCalendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />Date de fin *</label>
+                      <input type="date" name="dropoffDate" value={formData.dropoffDate} onChange={handleChange} required className={`${inputBaseClassName} text-sm sm:text-base`} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">Options supplémentaires</h2>
+                  <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                    <div className="border border-slate-200 rounded-xl p-3 sm:p-4 bg-slate-50/50 hover:border-slate-300 transition-colors">
+                      <label className="flex items-start gap-2 sm:gap-3 cursor-pointer">
+                        <input type="checkbox" name="gps" checked={formData.gps} onChange={handleChange} className="mt-0.5 sm:mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap justify-between items-start gap-2">
+                            <div className="min-w-0"><p className="font-semibold text-slate-800 text-sm sm:text-base">GPS</p><p className="text-xs sm:text-sm text-slate-600">Système de navigation</p></div>
+                            <p className="text-red-600 font-bold text-sm sm:text-base">+50 MAD/jour</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div className="border border-slate-200 rounded-xl p-3 sm:p-4 bg-slate-50/50 hover:border-slate-300 transition-colors">
+                      <label className="flex items-start gap-2 sm:gap-3 cursor-pointer">
+                        <input type="checkbox" name="childSeat" checked={formData.childSeat} onChange={handleChange} className="mt-0.5 sm:mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap justify-between items-start gap-2">
+                            <div className="min-w-0"><p className="font-semibold text-slate-800 text-sm sm:text-base">Siège bébé</p><p className="text-xs sm:text-sm text-slate-600">Siège pour enfant (0-4 ans)</p></div>
+                            <p className="text-red-600 font-bold text-sm sm:text-base">+30 MAD/jour</p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-3 sm:mb-4">Assurance</h3>
+                  <div className="space-y-2 sm:space-y-3">
+                    <label className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-colors ${formData.insurance === 'basic' ? 'border-red-500 bg-red-50/30' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'}`}>
+                      <input type="radio" name="insurance" value="basic" checked={formData.insurance === 'basic'} onChange={handleChange} className="mt-0.5 sm:mt-1 border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap justify-between items-start gap-2">
+                          <div className="min-w-0"><p className="font-semibold text-slate-800 text-sm sm:text-base">Assurance de base</p><p className="text-xs sm:text-sm text-slate-600">Inclus dans le prix</p></div>
+                          <p className="text-emerald-600 font-bold text-sm sm:text-base">Inclus</p>
+                        </div>
+                      </div>
+                    </label>
+                    <label className={`flex items-start gap-2 sm:gap-3 p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-colors ${formData.insurance === 'premium' ? 'border-red-500 bg-red-50/30' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'}`}>
+                      <input type="radio" name="insurance" value="premium" checked={formData.insurance === 'premium'} onChange={handleChange} className="mt-0.5 sm:mt-1 border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap justify-between items-start gap-2">
+                          <div className="min-w-0"><p className="font-semibold text-slate-800 text-sm sm:text-base">Assurance premium</p><p className="text-xs sm:text-sm text-slate-600">Zéro franchise, couverture maximale</p></div>
+                          <p className="text-red-600 font-bold text-sm sm:text-base">+100 MAD/jour</p>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {step === 3 && (
+                <div>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">Confirmation</h2>
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 flex gap-2 sm:gap-3">
+                    <IconInfo className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-slate-700">Vérifiez vos informations. Annulation gratuite jusqu'à 24h avant la prise en charge.</p>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 sm:p-4 mb-4 sm:mb-6">
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-800 mb-3">Récapitulatif</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Client</span><span className="font-semibold text-slate-800 truncate">{formData.firstName} {formData.lastName}</span></div>
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Email</span><span className="font-semibold text-slate-800 truncate">{formData.email}</span></div>
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Téléphone</span><span className="font-semibold text-slate-800 truncate">{formData.phone}</span></div>
+                      </div>
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Prise en charge</span><span className="font-semibold text-slate-800 truncate">{formData.pickupLocation}</span></div>
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Restitution</span><span className="font-semibold text-slate-800 truncate">{formData.dropoffLocation}</span></div>
+                        <div className="flex justify-between text-xs sm:text-sm"><span className="text-slate-600">Dates</span><span className="font-semibold text-slate-800 truncate">{formData.pickupDate ? new Date(formData.pickupDate).toLocaleDateString('fr-FR') : '—'} → {formData.dropoffDate ? new Date(formData.dropoffDate).toLocaleDateString('fr-FR') : '—'}</span></div>
+                      </div>
+                    </div>
+                    <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-xs sm:text-sm font-bold text-slate-800">Total</span>
+                      <span className="text-base sm:text-lg font-bold text-red-600">{calculateTotal()} MAD</span>
+                    </div>
+                  </div>
+                  <label className="flex items-start gap-2 mb-4 sm:mb-6">
+                    <input type="checkbox" required className="mt-0.5 sm:mt-1 rounded border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4" />
+                    <span className="text-xs sm:text-sm text-slate-600">Je confirme que mes informations sont correctes et j'accepte les <a href="#" className="text-red-600 hover:underline">conditions générales</a>.</span>
+                  </label>
+                </div>
+              )}
+
+              <div className="flex justify-between mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-slate-200">
+                <button type="button" onClick={() => step > 1 && setStep(step - 1)} className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-semibold text-sm sm:text-base transition-colors ${step === 1 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500'}`} disabled={step === 1}>Précédent</button>
+                <button type="submit" disabled={step === 1 && !canGoNextFromStep1()} className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-semibold text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors ${step === 1 && !canGoNextFromStep1() ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700'}`}>{step === 3 ? 'Confirmer' : 'Suivant'}</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

@@ -240,19 +240,19 @@ const steps = [
         </div>
 
         <div className="container relative z-10 mx-auto px-4 sm:px-6 max-w-6xl py-10 sm:py-16 md:py-24">
-          <div className="grid md:grid-cols-12 md:gap-10 lg:gap-14 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-12 md:gap-10 lg:gap-14 items-center">
             {/* Copy block */}
-            <div className="md:col-span-7 min-w-0">
+            <div className="md:col-span-7 min-w-0 text-center md:text-left order-1">
               <p className="text-slate-300 text-xs sm:text-sm font-medium uppercase tracking-wider mb-3 sm:mb-4">
                 Location de véhicules
               </p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-5 text-white break-words">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-5 text-white break-words leading-tight">
                 Louez votre voiture au Maroc
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-slate-200 mb-6 sm:mb-8 max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-slate-200 mb-6 sm:mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed">
                 Des prix compétitifs, un service de qualité et une flotte moderne pour tous vos déplacements au royaume.
               </p>
-              <div className="flex flex-wrap gap-2 sm:gap-3">
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
                 <Link
                   to="/cars"
                   className="inline-flex items-center gap-2 bg-white text-red-600 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-semibold hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors text-sm sm:text-base"
@@ -268,7 +268,7 @@ const steps = [
                 </Link>
               </div>
               {/* Trust line */}
-              <ul className="mt-8 sm:mt-10 flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-slate-300" role="list">
+              <ul className="mt-8 sm:mt-10 flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6 text-xs sm:text-sm text-slate-300" role="list">
                 <li className="flex items-center gap-2">
                   <IconShield className="w-5 h-5 text-slate-400 shrink-0" />
                   <span>Assurance incluse</span>
@@ -284,8 +284,10 @@ const steps = [
               </ul>
             </div>
             {/* Decorative visual */}
-            <div className="hidden md:flex md:col-span-5 justify-end items-center pt-8 md:pt-0">
-              <HeroCarSilhouette />
+            <div className="md:col-span-5 flex justify-center md:justify-end items-center pt-8 md:pt-0 order-2">
+              <div className="w-full max-w-[280px] sm:max-w-md md:max-w-full">
+                <HeroCarSilhouette />
+              </div>
             </div>
           </div>
         </div>
@@ -296,7 +298,7 @@ const steps = [
         <div className="container mx-auto max-w-5xl min-w-0">
           <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-slate-200 p-4 sm:p-5 md:p-6">
             <form onSubmit={handleSearch} className="space-y-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 {/* Lieu */}
                 <div className="flex flex-col">
                   <label htmlFor="search-location" className="text-sm font-medium text-slate-700 mb-2">
@@ -374,8 +376,8 @@ const steps = [
                 </div>
 
                 {/* Bouton Rechercher */}
-                <div className="flex flex-col justify-end">
-                  <label className="text-sm font-medium text-slate-700 mb-2 invisible">Rechercher</label>
+                <div className="flex flex-col justify-end mt-2 md:mt-0">
+                  <label className="text-sm font-medium text-slate-700 mb-2 hidden md:block md:invisible">Rechercher</label>
                   <button
                     type="submit"
                     disabled={!isSearchFormValid}
@@ -417,9 +419,6 @@ const steps = [
           </header>
         </div>
         <div className="relative overflow-hidden">
-          {/* Masque en dégradé à gauche (optionnel) */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-20 bg-slate-50 z-10 pointer-events-none [mask-image:linear-gradient(to_right,black,transparent)]" aria-hidden />
-          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-20 bg-slate-50 z-10 pointer-events-none [mask-image:linear-gradient(to_left,black,transparent)]" aria-hidden />
           <div className="flex w-max cars-scroll-track" style={{ width: 'max-content' }}>
             {[...featuredCars, ...featuredCars].map((car, index) => (
               <article
@@ -460,10 +459,15 @@ const steps = [
                           <span>{car.fuel}</span>
                         </li>
                       </ul>
-                      <span className="inline-flex items-center gap-1.5 text-red-600 font-medium text-sm group-hover:gap-2 transition-all">
-                        Réserver
-                        <IconArrowRight className="w-4 h-4" />
-                      </span>
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+                        <span className="text-[#101424] font-semibold text-sm underline underline-offset-4 hover:opacity-80 transition-opacity">
+                          Détail
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-red-600 font-bold text-sm underline underline-offset-4 hover:opacity-80 transition-opacity">
+                          Réserver
+                          <IconArrowRight className="w-4 h-4" />
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -474,8 +478,6 @@ const steps = [
 
        
         <div className="relative overflow-hidden mt-6">
-          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-20 bg-slate-50 z-10 pointer-events-none [mask-image:linear-gradient(to_right,black,transparent)]" aria-hidden />
-          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-20 bg-slate-50 z-10 pointer-events-none [mask-image:linear-gradient(to_left,black,transparent)]" aria-hidden />
           <div className="flex w-max cars-scroll-track-right" style={{ width: 'max-content' }}>
             {[...featuredCars, ...featuredCars].map((car, index) => (
               <article
@@ -500,7 +502,15 @@ const steps = [
                         <li className="flex items-center gap-1"><IconCog className="w-4 h-4 text-slate-500 shrink-0" /><span>{car.transmission}</span></li>
                         <li className="flex items-center gap-1"><IconFuel className="w-4 h-4 text-slate-500 shrink-0" /><span>{car.fuel}</span></li>
                       </ul>
-                      <span className="inline-flex items-center gap-1.5 text-red-600 font-medium text-sm group-hover:gap-2 transition-all">Réserver <IconArrowRight className="w-4 h-4" /></span>
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+                        <span className="text-[#101424] font-semibold text-sm underline underline-offset-4 hover:opacity-80 transition-opacity">
+                          Détail
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-red-600 font-bold text-sm underline underline-offset-4 hover:opacity-80 transition-opacity">
+                          Réserver
+                          <IconArrowRight className="w-4 h-4" />
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -513,8 +523,8 @@ const steps = [
       {/* Family Comfort Section */}
       <section className="py-12 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="relative order-2 md:order-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative order-2 md:order-1 mt-8 md:mt-0">
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/30 via-transparent to-transparent" />
                 <img
@@ -702,13 +712,22 @@ const steps = [
         <div className="mt-12 lg:mt-20 text-center">
           <Link
             to="/cars"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-red-100 transition-all hover:-translate-y-1"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-transparent text-red-600 px-2 py-2 rounded-2xl font-bold text-lg transition-opacity hover:opacity-80 underline underline-offset-4"
           >
             Commencer ma réservation
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14m-7-7 7 7-7 7"/>
             </svg>
           </Link>
+
+          <div className="mt-3">
+            <Link
+              to="/cars"
+              className="inline-flex items-center justify-center bg-transparent text-[#101424] px-2 py-1 font-semibold transition-opacity hover:opacity-80 underline underline-offset-4"
+            >
+              Détails
+            </Link>
+          </div>
         </div>
       </div>
     </section>
@@ -860,9 +879,6 @@ const steps = [
 
             <div className="lg:col-span-8 min-w-0">
               <div className="relative overflow-hidden">
-                <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-16 bg-white z-10 pointer-events-none [mask-image:linear-gradient(to_right,black,transparent)]" aria-hidden />
-                <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-16 bg-white z-10 pointer-events-none [mask-image:linear-gradient(to_left,black,transparent)]" aria-hidden />
-
                 <div className="flex w-max cars-scroll-track" style={{ width: 'max-content' }}>
                   {[...testimonials, ...testimonials].map((t, idx) => (
                     <article
